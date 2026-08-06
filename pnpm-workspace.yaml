@@ -1,0 +1,7 @@
+packages:
+  - frontend
+  - backend
+allowBuilds:
+  msw: true
+  esbuild: true
+  sharp: true
