@@ -1,0 +1,13 @@
+import type { File as MulterFile } from 'multer';
+
+declare global {
+  namespace Express {
+    namespace Multer {
+      type File = MulterFile;
+    }
+    interface Request {
+      file?: MulterFile;
+      files?: MulterFile[] | { [fieldname: string]: MulterFile[] };
+    }
+  }
+}

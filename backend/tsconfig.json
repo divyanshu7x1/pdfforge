@@ -8,9 +8,6 @@
     "lib": [
       "ES2022"
     ],
-    "types": [
-      "node"
-    ],
     "strict": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
@@ -29,7 +26,8 @@
     "noEmit": true
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "src/**/*.d.ts"
   ],
   "exclude": [
     "dist",
