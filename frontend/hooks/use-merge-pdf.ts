@@ -24,6 +24,8 @@ type MergeResult = {
   downloadUrl: string
 }
 
+import { getApiBaseUrl } from '@/lib/api-config'
+
 const PROCESSING_STEPS = [
   'Preparing...',
   'Uploading...',
@@ -31,10 +33,6 @@ const PROCESSING_STEPS = [
   'Finalizing...',
   'Ready...',
 ] as const
-
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, '') ||
-  'http://localhost:4000/api'
 
 function createId() {
   return Math.random().toString(36).slice(2, 10)
@@ -236,7 +234,7 @@ export function useMergePdf() {
         formData.append('files', file.file, file.name)
       })
 
-      const response = await fetch(`${API_BASE_URL}/pdf/merge`, {
+      const response = await fetch(`${getApiBaseUrl()}/pdf/merge`, {
         method: 'POST',
         body: formData,
       })

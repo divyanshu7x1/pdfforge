@@ -8,6 +8,7 @@ import { ProgressSection } from '@/components/pdf/progress-section'
 import { SuccessSection } from '@/components/pdf/success-section'
 import { ErrorMessage } from '@/components/pdf/error-message'
 import { ToolWorkspace } from '@/components/pdf/tool-workspace'
+import { getApiBaseUrl } from '@/lib/api-config'
 import { FileType2, Send } from 'lucide-react'
 
 export default function ConvertPage() {
@@ -24,7 +25,7 @@ export default function ConvertPage() {
     setProgress(30)
 
     try {
-      const response = await fetch('http://localhost:4000/api/pdf/convert-html', {
+      const response = await fetch(`${getApiBaseUrl()}/pdf/convert-html`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ html: content }),
