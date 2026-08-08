@@ -25,6 +25,7 @@ type MergeResult = {
 }
 
 import { getApiBaseUrl } from '@/lib/api-config'
+import { parseNetworkError, parseResponseError } from '@/lib/api-error'
 
 const PROCESSING_STEPS = [
   'Preparing...',
@@ -228,19 +229,21 @@ export function useMergePdf() {
     setStatus('processing')
     startProgress()
 
+    const requestUrl = `${getApiBaseUrl()}/pdf/merge`
+
     try {
       const formData = new FormData()
       files.forEach((file) => {
         formData.append('files', file.file, file.name)
       })
 
-      const response = await fetch(`${getApiBaseUrl()}/pdf/merge`, {
+      const response = await fetch(requestUrl, {
         method: 'POST',
         body: formData,
       })
 
       if (!response.ok) {
-        throw new Error(await parseMergeError(response))
+        throw new Error(await parseResponseError(response))
       }
 
       const blob = await response.blob()
@@ -265,10 +268,7 @@ export function useMergePdf() {
       setStatus('idle')
       setError({
         code: 'server',
-        message:
-          mergeError instanceof Error
-            ? mergeError.message
-            : 'Unable to merge the selected PDF files.',
+        message: parseNetworkError(mergeError, requestUrl),
       })
     }
   }, [clearResult, files, startProgress, stopProgress])

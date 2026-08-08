@@ -24,6 +24,7 @@ export type ToolResult = {
 }
 
 import { getApiBaseUrl } from '@/lib/api-config'
+import { parseNetworkError, parseResponseError } from '@/lib/api-error'
 
 const PROCESSING_STEPS = [
   'Preparing...',
@@ -209,6 +210,8 @@ export function usePdfTool({
       setStatus('processing')
       startProgress()
 
+      const requestUrl = `${getApiBaseUrl()}/pdf${endpoint}`
+
       try {
         const formData = new FormData()
         files.forEach((f) => {
@@ -219,18 +222,13 @@ export function usePdfTool({
           formData.append(k, String(v))
         })
 
-        const response = await fetch(`${getApiBaseUrl()}/pdf${endpoint}`, {
+        const response = await fetch(requestUrl, {
           method: 'POST',
           body: formData
         })
 
         if (!response.ok) {
-          let msg = 'Failed to process document.'
-          try {
-            const errJson = await response.json()
-            if (errJson.error?.message) msg = errJson.error.message
-          } catch {}
-          throw new Error(msg)
+          throw new Error(await parseResponseError(response))
         }
 
         const blob = await response.blob()
@@ -258,10 +256,7 @@ export function usePdfTool({
         setStatus('idle')
         setError({
           code: 'server',
-          message:
-            toolErr instanceof Error
-              ? toolErr.message
-              : 'An unexpected error occurred while processing.'
+          message: parseNetworkError(toolErr, requestUrl)
         })
       }
     },

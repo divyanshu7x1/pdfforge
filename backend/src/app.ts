@@ -15,11 +15,12 @@ import { apiRouter } from './routes';
 export const app: Express = express();
 
 app.disable('x-powered-by');
+app.set('trust proxy', 1);
 
+app.use(cors(corsOptions));
 app.use(requestLogger);
 app.use(globalRateLimiter);
 app.use(helmet());
-app.use(cors(corsOptions));
 app.use(express.json({ limit: env.REQUEST_BODY_LIMIT }));
 app.use(express.urlencoded({ extended: true, limit: env.REQUEST_BODY_LIMIT }));
 app.use(compression());

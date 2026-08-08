@@ -7,17 +7,17 @@ const allowAllOrigins = env.corsOrigins.includes('*');
 
 export const corsOptions: CorsOptions = {
   origin(origin, callback) {
-    if (allowAllOrigins) {
-      callback(null, origin || true);
+    if (!origin) {
+      callback(null, true);
       return;
     }
 
-    if (!origin || env.corsOrigins.includes(origin)) {
-      callback(null, origin || true);
+    if (allowAllOrigins || env.corsOrigins.includes(origin)) {
+      callback(null, origin);
       return;
     }
 
-    callback(null, false);
+    callback(new AppError(`CORS origin '${origin}' is not allowed by policy.`, 403, 'CORS_NOT_ALLOWED'));
   },
   credentials: true,
   exposedHeaders: ['Content-Disposition', 'Content-Length'],

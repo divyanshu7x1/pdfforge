@@ -11,7 +11,7 @@ const environmentSchema = z.object({
     .enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent'])
     .default('info'),
   CORS_ORIGIN: z.string().trim().default('*'),
-  REQUEST_BODY_LIMIT: z.string().trim().min(1).default('1mb'),
+  REQUEST_BODY_LIMIT: z.string().trim().min(1).default('10mb'),
   PDF_UPLOAD_MAX_FILE_SIZE_BYTES: z.coerce.number().int().positive().default(100 * 1024 * 1024)
 });
 
@@ -26,12 +26,24 @@ if (!parsedEnvironment.success) {
 }
 
 const rawEnvironment = parsedEnvironment.data;
-const corsOrigins =
+
+const defaultAllowedOrigins = [
+  'https://pdfforge-frontend-kappa.vercel.app',
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'http://127.0.0.1:3000'
+];
+
+const parsedOrigins =
   rawEnvironment.CORS_ORIGIN === '*'
     ? ['*']
     : rawEnvironment.CORS_ORIGIN.split(',')
         .map((origin) => origin.trim())
         .filter((origin): origin is string => origin.length > 0);
+
+const corsOrigins = parsedOrigins.includes('*')
+  ? ['*']
+  : Array.from(new Set([...parsedOrigins, ...defaultAllowedOrigins]));
 
 if (corsOrigins.length === 0) {
   throw new Error('Invalid environment configuration: CORS_ORIGIN must not be empty');

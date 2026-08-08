@@ -9,7 +9,8 @@ import { SuccessSection } from '@/components/pdf/success-section'
 import { ErrorMessage } from '@/components/pdf/error-message'
 import { ToolWorkspace } from '@/components/pdf/tool-workspace'
 import { getApiBaseUrl } from '@/lib/api-config'
-import { FileType2, Send } from 'lucide-react'
+import { parseNetworkError, parseResponseError } from '@/lib/api-error'
+import { FileType2 } from 'lucide-react'
 
 export default function ConvertPage() {
   const [content, setContent] = useState('<h1>Sample Document</h1><p>Welcome to PDFForge instant document converter!</p>')
@@ -24,15 +25,17 @@ export default function ConvertPage() {
     setStatus('processing')
     setProgress(30)
 
+    const requestUrl = `${getApiBaseUrl()}/pdf/convert-html`
+
     try {
-      const response = await fetch(`${getApiBaseUrl()}/pdf/convert-html`, {
+      const response = await fetch(requestUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ html: content }),
       })
 
       if (!response.ok) {
-        throw new Error('Failed to convert HTML/Text content to PDF.')
+        throw new Error(await parseResponseError(response))
       }
 
       const blob = await response.blob()
@@ -47,7 +50,7 @@ export default function ConvertPage() {
     } catch (err) {
       setStatus('idle')
       setProgress(0)
-      setError(err instanceof Error ? err.message : 'Conversion failed.')
+      setError(parseNetworkError(err, requestUrl))
     }
   }
 
