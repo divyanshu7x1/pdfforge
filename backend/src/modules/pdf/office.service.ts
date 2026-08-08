@@ -8,24 +8,46 @@ import { convertService } from './convert.service';
 
 export class OfficeService {
   public async wordToPdf(wordBuffer: Buffer): Promise<Buffer> {
+    // 1. Primary: Mammoth HTML conversion
     try {
       const result = await mammoth.convertToHtml({ buffer: wordBuffer });
-      const htmlContent = result.value || '<h1>Empty Document</h1>';
-      return await convertService.textOrHtmlToPdf(htmlContent, true);
-    } catch (error) {
-      try {
-        const rawText = wordBuffer.toString('utf-8').replace(/[^\x20-\x7E\s]/g, ' ');
-        const cleanLines = rawText.split(/\r?\n/).filter((l) => l.trim().length > 3).join('\n');
-        if (cleanLines.trim().length > 10) {
-          return await convertService.textOrHtmlToPdf(cleanLines, false);
-        }
-      } catch {
-        // Ignore fallback failure
+      if (result.value && result.value.trim().length > 0) {
+        return await convertService.textOrHtmlToPdf(result.value, true);
       }
-
-      const msg = error instanceof Error ? error.message : 'Word conversion failed';
-      throw new AppError(`Unable to convert Word document to PDF: ${msg}`, 422, 'WORD_CONVERSION_FAILED');
+    } catch {
+      // Fall through to raw text extraction
     }
+
+    // 2. Secondary: Mammoth raw text extraction (handles complex docx, drawings, tables)
+    try {
+      const rawResult = await mammoth.extractRawText({ buffer: wordBuffer });
+      if (rawResult.value && rawResult.value.trim().length > 0) {
+        return await convertService.textOrHtmlToPdf(rawResult.value, false);
+      }
+    } catch {
+      // Fall through to stream extraction
+    }
+
+    // 3. Tertiary: OLE/Stream text extraction for legacy .doc or unzipped text streams
+    try {
+      const rawString = wordBuffer.toString('latin1');
+      const textMatches = rawString.match(/[\x20-\x7E]{4,}/g) || [];
+      const cleaned = textMatches
+        .filter((s) => !s.startsWith('PK') && !s.includes('word/') && !s.includes('[Content_Types]'))
+        .join('\n');
+
+      if (cleaned.trim().length > 10) {
+        return await convertService.textOrHtmlToPdf(cleaned, false);
+      }
+    } catch {
+      // Ignore
+    }
+
+    throw new AppError(
+      'Unable to convert Word document to PDF. Ensure the file is a valid .docx or .doc document.',
+      422,
+      'WORD_CONVERSION_FAILED'
+    );
   }
 
   public async pdfToWord(pdfBuffer: Buffer): Promise<Buffer> {
