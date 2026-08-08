@@ -23,7 +23,7 @@ const IMAGE_MIME_TYPES = new Set([
   'image/webp'
 ]);
 
-const DEFAULT_MAX_FILE_COUNT = 10;
+const DEFAULT_MAX_FILE_COUNT = 50;
 const DEFAULT_UPLOAD_FIELD_NAME = 'files';
 
 interface UploadFilesOptions {
@@ -80,17 +80,13 @@ function normalizeUploadError(error: unknown): AppError {
           }
         );
       case 'LIMIT_FILE_COUNT':
-        return new AppError(
-          'Too many files were uploaded in a single request.',
-          400,
-          'FILE_COUNT_EXCEEDED'
-        );
       case 'LIMIT_UNEXPECTED_FILE':
         return new AppError(
-          `Unexpected upload field. Use "${DEFAULT_UPLOAD_FIELD_NAME}" for file uploads.`,
+          `Too many files uploaded in a single request. Maximum allowed is ${DEFAULT_MAX_FILE_COUNT} files.`,
           400,
-          'UNEXPECTED_UPLOAD_FIELD',
+          'FILE_COUNT_EXCEEDED',
           {
+            maxFileCount: DEFAULT_MAX_FILE_COUNT,
             field: DEFAULT_UPLOAD_FIELD_NAME
           }
         );
