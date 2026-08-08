@@ -16,5 +16,6 @@ apiRouter.get('/', (_req, res) => {
 });
 
 apiRouter.use('/pdf', pdfRouter);
+apiRouter.use('/convert', pdfRouter);
 
 export { apiRouter };
