@@ -31,21 +31,31 @@ export function AmbientCanvas() {
     let width = (canvas.width = window.innerWidth)
     let height = (canvas.height = window.innerHeight)
 
-    const colors = ['#86EFAC', '#38BDF8', '#FEF08A', '#DFD2B7']
+    const colors = [
+      '#15803D', // Forest Emerald
+      '#22C55E', // Clover Green
+      '#14532D', // Deep Woodland
+      '#38BDF8', // Sky Azure
+      '#D99B26', // Artisan Ochre
+      '#C86D51', // Terracotta
+      '#86EFAC', // Dappled Meadow
+      '#FEF08A', // Sunbeam Yellow
+    ]
     const particles: Particle[] = []
-    const particleCount = Math.min(25, Math.floor(width / 50))
+    const isDesktop = width >= 768
+    const particleCount = isDesktop ? 55 : 25
 
     for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        size: Math.random() * 6 + 4,
+        size: Math.random() * 8 + 4, // 4px to 12px
         speedX: Math.random() * 0.4 - 0.2,
         speedY: Math.random() * 0.5 + 0.2,
         rotation: Math.random() * Math.PI * 2,
         rotationSpeed: Math.random() * 0.02 - 0.01,
-        color: colors[Math.floor(Math.random() * colors.length)] ?? '#38BDF8',
-        opacity: Math.random() * 0.4 + 0.3,
+        color: colors[Math.floor(Math.random() * colors.length)] ?? '#15803D',
+        opacity: Math.random() * 0.45 + 0.45, // 0.45 to 0.90
       })
     }
 
@@ -82,6 +92,15 @@ export function AmbientCanvas() {
         ctx.beginPath()
         ctx.ellipse(0, 0, p.size, p.size / 2, 0, 0, Math.PI * 2)
         ctx.fill()
+
+        // Leaf central vein line
+        ctx.beginPath()
+        ctx.moveTo(-p.size * 0.7, 0)
+        ctx.lineTo(p.size * 0.7, 0)
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)'
+        ctx.lineWidth = 0.8
+        ctx.stroke()
+
         ctx.restore()
       }
 
