@@ -3,6 +3,37 @@ import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import sharp from 'sharp';
 import { AppError } from '../../core/errors/app-error';
 
+function decodeHtmlEntities(str: string): string {
+  return str
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&quot;/gi, '"')
+    .replace(/&apos;/gi, "'")
+    .replace(/&#39;/g, "'")
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
+}
+
+export function sanitizeTextForWinAnsi(text: string): string {
+  const decoded = decodeHtmlEntities(text);
+  return decoded
+    .replace(/[\u201C\u201D\u201E\u201F\u2033\u2036]/g, '"')
+    .replace(/[\u2018\u2019\u201A\u201B\u2032\u2035]/g, "'")
+    .replace(/[\u2013\u2014\u2015]/g, '-')
+    .replace(/[\u2022\u2023\u2043\u204C\u204D\u2219]/g, '*')
+    .replace(/\u2026/g, '...')
+    .replace(/\u00A0/g, ' ')
+    .replace(/\u2122/g, 'TM')
+    .replace(/\u00A9/g, '(c)')
+    .replace(/\u00AE/g, '(r)')
+    .replace(/\u20AC/g, 'EUR')
+    .replace(/\u00A3/g, 'GBP')
+    .replace(/\u00A5/g, 'YEN')
+    .replace(/[^\x20-\x7E\xA0-\xFF]/g, ' ');
+}
+
 export interface ImageInputFile {
   originalname: string;
   mimetype: string;
@@ -18,36 +49,35 @@ export class ConvertService {
     const pdfDoc = await PDFDocument.create();
 
     for (const img of imageFiles) {
-      let pngOrJpgBuffer = img.buffer;
-      let isPng = img.mimetype === 'image/png' || img.originalname.toLowerCase().endsWith('.png');
-      let isJpg = img.mimetype === 'image/jpeg' || /\.(jpg|jpeg)$/i.test(img.originalname);
+      let embeddedImage;
+      const isPngExt = img.mimetype === 'image/png' || img.originalname.toLowerCase().endsWith('.png');
+      const isJpgExt = img.mimetype === 'image/jpeg' || /\.(jpg|jpeg)$/i.test(img.originalname);
 
-      // Convert WebP or unhandled formats to PNG via sharp
-      if (!isPng && !isJpg) {
-        pngOrJpgBuffer = await sharp(img.buffer).toFormat('png').toBuffer();
-        isPng = true;
+      if (isPngExt) {
+        try {
+          embeddedImage = await pdfDoc.embedPng(img.buffer);
+        } catch {
+          // Fallback if raw buffer is not valid PNG
+        }
+      } else if (isJpgExt) {
+        try {
+          embeddedImage = await pdfDoc.embedJpg(img.buffer);
+        } catch {
+          // Fallback if raw buffer is not valid JPG
+        }
       }
 
-      let embeddedImage;
-      if (isPng) {
+      if (!embeddedImage) {
         try {
-          embeddedImage = await pdfDoc.embedPng(pngOrJpgBuffer);
-        } catch {
-          // Fallback conversion to JPEG via sharp if PNG embedding fails
-          const jpegBuf = await sharp(img.buffer).toFormat('jpeg').toBuffer();
-          embeddedImage = await pdfDoc.embedJpg(jpegBuf);
-        }
-      } else {
-        try {
-          embeddedImage = await pdfDoc.embedJpg(pngOrJpgBuffer);
-        } catch {
           const pngBuf = await sharp(img.buffer).toFormat('png').toBuffer();
           embeddedImage = await pdfDoc.embedPng(pngBuf);
+        } catch {
+          const jpegBuf = await sharp(img.buffer).jpeg({ quality: 90 }).toBuffer();
+          embeddedImage = await pdfDoc.embedJpg(jpegBuf);
         }
       }
 
       const dims = embeddedImage.scale(1.0);
-      // Fit to standard A4 dimensions (595.28 x 841.89) while preserving aspect ratio
       const maxW = 595.28;
       const maxH = 841.89;
       const scaleFactor = Math.min(maxW / dims.width, maxH / dims.height, 1.0);
@@ -80,7 +110,6 @@ export class ConvertService {
       throw new AppError('PDF document contains no pages.', 422, 'EMPTY_PDF');
     }
 
-    // Render pages as high resolution PNGs using sharp SVG rendering
     const archive = archiver('zip', { zlib: { level: 9 } });
     const chunks: Buffer[] = [];
 
@@ -121,14 +150,14 @@ export class ConvertService {
     const pageHeight = 841.89;
     const maxTextWidth = pageWidth - margin * 2;
 
-    // Clean HTML tags if plain content conversion
-    const cleanText = isHtml ? content.replace(/<[^>]+>/g, '\n') : content;
-    const lines = cleanText.split(/\r?\n/);
+    const rawText = isHtml ? content.replace(/<[^>]+>/g, '\n') : content;
+    const cleanText = sanitizeTextForWinAnsi(rawText);
+    const lines = cleanText.split(/\r?\n/).map((l) => l.trim()).filter((l) => l.length > 0);
 
     let page = pdfDoc.addPage([pageWidth, pageHeight]);
     let currentY = pageHeight - margin;
 
-    for (const rawLine of lines) {
+    for (const rawLine of lines.length > 0 ? lines : ['(Empty Content)']) {
       const words = rawLine.split(' ');
       let currentLineText = '';
 

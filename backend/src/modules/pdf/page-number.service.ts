@@ -1,5 +1,6 @@
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import { AppError } from '../../core/errors/app-error';
+import { sanitizeTextForWinAnsi } from './convert.service';
 
 export interface PageNumberOptions {
   position?: 'bottom-center' | 'bottom-right' | 'bottom-left' | 'top-center' | 'top-right' | 'top-left';
@@ -35,7 +36,8 @@ export class PageNumberService {
       
       const { width, height } = page.getSize();
       const pageNum = i + 1;
-      const label = formatStr.replace('{page}', pageNum.toString()).replace('{total}', totalPages.toString());
+      const rawLabel = formatStr.replace('{page}', pageNum.toString()).replace('{total}', totalPages.toString());
+      const label = sanitizeTextForWinAnsi(rawLabel);
 
       const labelWidth = font.widthOfTextAtSize(label, fontSize);
       let x = (width - labelWidth) / 2;

@@ -1,5 +1,6 @@
 import { degrees, PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import { AppError } from '../../core/errors/app-error';
+import { sanitizeTextForWinAnsi } from './convert.service';
 
 export interface WatermarkOptions {
   text: string;
@@ -27,7 +28,7 @@ export class WatermarkService {
     const fontSize = options.fontSize ?? 48;
     const opacity = options.opacity ?? 0.3;
     const rotation = options.rotation ?? -45;
-    const text = options.text;
+    const text = sanitizeTextForWinAnsi(options.text);
 
     const textWidth = font.widthOfTextAtSize(text, fontSize);
     const textHeight = font.heightAtSize(fontSize);
