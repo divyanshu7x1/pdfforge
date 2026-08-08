@@ -55,11 +55,7 @@ export default function ConvertPage() {
   }
 
   return (
-    <div className="relative min-h-screen bg-background">
-      <div
-        aria-hidden="true"
-        className="bg-grid pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,black,transparent)]"
-      />
+    <div className="relative min-h-screen bg-parchment-100 text-artisan-ink paper-grain">
 
       <div className="relative">
         <SiteNav />
@@ -77,8 +73,8 @@ export default function ConvertPage() {
               status={status}
               idle={
                 <>
-                  <div className="rounded-2xl border border-border bg-card/40 p-5 backdrop-blur-xl">
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  <div className="rounded-2xl border border-parchment-300 bg-parchment-50 p-5 shadow-sm">
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-artisan-ink">
                       HTML / Plain Text Content
                     </label>
                     <textarea
@@ -86,7 +82,7 @@ export default function ConvertPage() {
                       value={content}
                       onChange={(e) => setContent(e.target.value)}
                       placeholder="Enter HTML or plain text..."
-                      className="mt-3 w-full rounded-xl border border-border bg-background/60 p-4 font-mono text-sm text-foreground outline-none focus:border-primary/50"
+                      className="mt-3 w-full rounded-xl border border-parchment-300 bg-parchment-100 p-4 font-mono text-xs text-artisan-ink outline-none focus:border-sky-azure"
                     />
                   </div>
 
@@ -102,10 +98,10 @@ export default function ConvertPage() {
                       type="button"
                       disabled={!content.trim()}
                       onClick={handleConvert}
-                      className="bg-premium shadow-premium inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03]"
+                      className="px-6 py-3 rounded-xl bg-artisan-terracotta text-white font-medium text-xs sm:text-sm shadow-artisan hover:bg-artisan-clay transition-all flex items-center gap-2"
                     >
-                      <FileType2 className="size-4" />
-                      Convert to PDF
+                      <FileType2 className="w-4 h-4" />
+                      <span>Convert to PDF</span>
                     </button>
                   </div>
                 </>

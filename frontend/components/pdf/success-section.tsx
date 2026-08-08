@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'motion/react'
-import { Check, Download, FileText, RotateCcw } from 'lucide-react'
+import { Check, Download } from 'lucide-react'
 import { formatBytes } from '@/lib/format'
 
 type SuccessSectionProps = {
@@ -33,70 +33,38 @@ export function SuccessSection({
       transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
       role="status"
       aria-live="polite"
-      aria-labelledby="merge-success-title"
-      className="ring-highlight relative overflow-hidden rounded-3xl border border-border bg-card/40 px-6 py-14 text-center backdrop-blur-xl sm:px-12"
+      aria-labelledby="tool-success-title"
+      className="p-5 sm:p-6 rounded-2xl bg-meadow-emerald/10 border border-meadow-emerald/30 text-center space-y-3"
     >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-0 size-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/20 blur-3xl"
-      />
-
-      <div className="relative">
-        <motion.span
-          initial={{ scale: 0, rotate: -20 }}
-          animate={{ scale: 1, rotate: 0 }}
-          transition={{ type: 'spring', stiffness: 260, damping: 16, delay: 0.1 }}
-          className="bg-premium shadow-premium mx-auto flex size-16 items-center justify-center rounded-2xl text-primary-foreground"
-        >
-          <Check className="size-8" strokeWidth={2.5} />
-        </motion.span>
-
-        <h2
-          id="merge-success-title"
-          className="mt-6 text-2xl font-semibold tracking-tight text-foreground"
-        >
-          Your merged PDF is ready
+      <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto rounded-full bg-meadow-emerald text-white flex items-center justify-center shadow-sm">
+        <Check className="w-5 h-5 sm:w-6 sm:h-6" aria-hidden="true" />
+      </div>
+      <div>
+        <h2 id="tool-success-title" className="font-display text-lg sm:text-xl text-artisan-ink font-medium">
+          Document Successfully Forged!
         </h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          All pages combined into one clean document.
+        <p className="text-xs text-parchment-800 mt-0.5 font-mono">
+          {fileName} ({formatBytes(fileSize)})
         </p>
+      </div>
 
-        <div className="ring-highlight mx-auto mt-8 flex max-w-md items-center gap-3 rounded-2xl border border-border bg-card/60 p-3 text-left backdrop-blur-xl">
-          <span className="bg-premium shadow-premium flex size-11 shrink-0 items-center justify-center rounded-xl text-primary-foreground">
-            <FileText className="size-5" />
-          </span>
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-medium text-foreground">
-              {fileName}
-            </p>
-            <p className="mt-0.5 text-xs tabular-nums text-muted-foreground">
-              {formatBytes(fileSize)}
-            </p>
-          </div>
-        </div>
-
-        <div className="mx-auto mt-8 flex max-w-md flex-col items-center gap-3 sm:flex-row sm:justify-center">
-          <motion.button
-            type="button"
-            onClick={handleDownload}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-            aria-label={`Download ${fileName}`}
-            className="bg-premium shadow-premium inline-flex w-full items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold text-primary-foreground sm:w-auto"
-          >
-            <Download className="size-4" />
-            Download PDF
-          </motion.button>
-          <button
-            type="button"
-            onClick={onReset}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-border bg-card/50 px-7 py-3.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/40 hover:bg-card/70 focus-visible:border-primary/40 focus-visible:bg-card/70 sm:w-auto"
-          >
-            <RotateCcw className="size-4" />
-            Merge another
-          </button>
-        </div>
+      <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
+        <button
+          type="button"
+          onClick={handleDownload}
+          aria-label={`Download ${fileName}`}
+          className="px-5 py-2.5 rounded-xl bg-meadow-emerald text-white text-xs sm:text-sm font-medium shadow-md hover:bg-meadow-forest transition-all flex items-center gap-2"
+        >
+          <Download className="w-4 h-4" aria-hidden="true" />
+          <span>Download File</span>
+        </button>
+        <button
+          type="button"
+          onClick={onReset}
+          className="px-4 py-2.5 rounded-xl bg-parchment-200 text-artisan-ink text-xs sm:text-sm font-medium border border-parchment-300 hover:bg-parchment-300 transition-all"
+        >
+          Forge Another
+        </button>
       </div>
     </motion.section>
   )

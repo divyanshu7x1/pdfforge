@@ -1,49 +1,32 @@
-import dynamic from 'next/dynamic'
+import { AmbientCanvas } from '@/components/ambient-canvas'
+import { SiteNav } from '@/components/site-nav'
 import { HeroSection } from '@/components/hero/hero-section'
-import { Features } from '@/components/sections/features'
+import { TransformationsSection } from '@/components/sections/transformations'
+import { SecuritySanctumSection } from '@/components/sections/security-sanctum'
+import { ToolsSection } from '@/components/tools/tools-section'
+import { FinalCTASection } from '@/components/sections/final-cta'
 import { SiteFooter } from '@/components/site-footer'
-
-const ToolsSection = dynamic(() =>
-  import('@/components/tools/tools-section').then((m) => ({
-    default: m.ToolsSection,
-  })),
-)
-
-const AiSection = dynamic(() =>
-  import('@/components/sections/ai-section').then((m) => ({
-    default: m.AiSection,
-  })),
-)
-
-const HowItWorks = dynamic(() =>
-  import('@/components/sections/how-it-works').then((m) => ({
-    default: m.HowItWorks,
-  })),
-)
-
-const Testimonials = dynamic(() =>
-  import('@/components/sections/testimonials').then((m) => ({
-    default: m.Testimonials,
-  })),
-)
-
-const Faq = dynamic(() =>
-  import('@/components/sections/faq').then((m) => ({
-    default: m.Faq,
-  })),
-)
 
 export default function Page() {
   return (
-    <main id="top" className="min-h-screen bg-background">
-      <HeroSection />
-      <Features />
-      <ToolsSection />
-      <AiSection />
-      <HowItWorks />
-      <Testimonials />
-      <Faq />
+    <div id="top" className="relative min-h-screen bg-parchment-100 text-artisan-ink selection:bg-sky-azure selection:text-white paper-grain">
+      {/* Background ambient floating particles */}
+      <AmbientCanvas />
+
+      {/* Sticky Header Navigation */}
+      <SiteNav />
+
+      {/* Main Content Sections */}
+      <main className="relative z-10 space-y-12 sm:space-y-16 md:space-y-20 pb-16">
+        <HeroSection />
+        <TransformationsSection />
+        <SecuritySanctumSection />
+        <ToolsSection />
+        <FinalCTASection />
+      </main>
+
+      {/* Footer */}
       <SiteFooter />
-    </main>
+    </div>
   )
 }

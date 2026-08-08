@@ -35,11 +35,7 @@ export default function PdfToWordPage() {
   })
 
   return (
-    <div className="relative min-h-screen bg-background">
-      <div
-        aria-hidden="true"
-        className="bg-grid pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,black,transparent)]"
-      />
+    <div className="relative min-h-screen bg-parchment-100 text-artisan-ink paper-grain">
 
       <div className="relative">
         <SiteNav />
@@ -80,10 +76,10 @@ export default function PdfToWordPage() {
                           type="button"
                           disabled={!canExecute}
                           onClick={() => executeTool()}
-                          className="bg-premium shadow-premium inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03]"
+                          className="px-6 py-3 rounded-xl bg-artisan-terracotta text-white font-medium text-xs sm:text-sm shadow-artisan hover:bg-artisan-clay transition-all flex items-center gap-2"
                         >
-                          <FileText className="size-4" />
-                          Convert PDF to Word
+                          <FileText className="w-4 h-4" />
+                          <span>Convert PDF to Word</span>
                         </button>
                       </div>
                     </>

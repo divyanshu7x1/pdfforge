@@ -38,11 +38,7 @@ export default function WatermarkPage() {
   })
 
   return (
-    <div className="relative min-h-screen bg-background">
-      <div
-        aria-hidden="true"
-        className="bg-grid pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,black,transparent)]"
-      />
+    <div className="relative min-h-screen bg-parchment-100 text-artisan-ink paper-grain">
 
       <div className="relative">
         <SiteNav />
@@ -78,9 +74,9 @@ export default function WatermarkPage() {
                         onAddMore={() => {}}
                       />
 
-                      <div className="mt-6 space-y-4 rounded-2xl border border-border bg-card/40 p-4 backdrop-blur-xl">
+                      <div className="mt-6 space-y-4 rounded-2xl border border-parchment-300 bg-parchment-50 p-4 shadow-sm">
                         <div>
-                          <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                          <label className="block text-xs font-semibold uppercase tracking-wider text-artisan-ink">
                             Watermark Text
                           </label>
                           <input
@@ -88,18 +84,18 @@ export default function WatermarkPage() {
                             value={text}
                             onChange={(e) => setText(e.target.value)}
                             placeholder="e.g. CONFIDENTIAL, DRAFT, SAMPLE"
-                            className="mt-2 w-full rounded-xl border border-border bg-background/60 px-4 py-2.5 text-sm text-foreground outline-none focus:border-primary/50"
+                            className="mt-2 w-full rounded-xl border border-parchment-300 bg-parchment-100 px-4 py-2.5 text-xs font-mono text-artisan-ink outline-none focus:border-sky-azure"
                           />
                         </div>
 
                         <div>
-                          <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                          <label className="block text-xs font-semibold uppercase tracking-wider text-artisan-ink">
                             Position
                           </label>
                           <select
                             value={position}
                             onChange={(e) => setPosition(e.target.value as any)}
-                            className="mt-2 w-full rounded-xl border border-border bg-background/60 px-4 py-2.5 text-sm text-foreground outline-none focus:border-primary/50"
+                            className="mt-2 w-full rounded-xl border border-parchment-300 bg-parchment-100 px-4 py-2.5 text-xs font-mono text-artisan-ink outline-none focus:border-sky-azure"
                           >
                             <option value="center">Center (Diagonal)</option>
                             <option value="top-left">Top Left</option>
@@ -115,10 +111,10 @@ export default function WatermarkPage() {
                           type="button"
                           disabled={!canExecute || !text.trim()}
                           onClick={() => executeTool({ text, position })}
-                          className="bg-premium shadow-premium inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03] disabled:opacity-50"
+                          className="px-6 py-3 rounded-xl bg-artisan-terracotta text-white font-medium text-xs sm:text-sm shadow-artisan hover:bg-artisan-clay transition-all flex items-center gap-2 disabled:opacity-50"
                         >
-                          <Stamp className="size-4" />
-                          Apply Watermark
+                          <Stamp className="w-4 h-4" />
+                          <span>Apply Watermark</span>
                         </button>
                       </div>
                     </>

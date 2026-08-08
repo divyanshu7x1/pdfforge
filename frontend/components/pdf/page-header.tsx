@@ -3,10 +3,6 @@
 import { motion } from 'motion/react'
 import { Layers } from 'lucide-react'
 
-import { SECTION_EASE } from '@/lib/constants'
-
-const EASE = SECTION_EASE
-
 type PageHeaderProps = {
   eyebrow: string
   title: string
@@ -21,31 +17,36 @@ export function PageHeader({
   subtitle,
 }: PageHeaderProps) {
   return (
-    <div className="mx-auto max-w-2xl text-center">
-      <motion.span
-        initial={{ opacity: 0, y: 16, filter: 'blur(6px)' }}
-        animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-        transition={{ duration: 0.7, ease: EASE }}
-        className="ring-highlight inline-flex items-center gap-2 rounded-full border border-border bg-card/50 px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground backdrop-blur-xl"
+    <div className="mx-auto max-w-2xl text-center space-y-3">
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-sky-mist border border-sky-breeze/30 text-sky-deep text-xs font-semibold tracking-wide"
       >
-        <Layers className="size-3.5 text-primary" />
-        {eyebrow}
-      </motion.span>
+        <Layers className="w-3.5 h-3.5 text-sky-azure" />
+        <span>{eyebrow}</span>
+      </motion.div>
 
       <motion.h1
-        initial={{ opacity: 0, y: 22, filter: 'blur(8px)' }}
-        animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-        transition={{ duration: 0.8, ease: EASE, delay: 0.08 }}
-        className="mt-6 text-balance text-4xl font-semibold leading-[1.02] tracking-[-0.03em] text-foreground sm:text-5xl"
+        initial={{ opacity: 0, y: 22 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.08 }}
+        className="font-display text-3xl sm:text-4xl lg:text-5xl font-normal text-artisan-ink leading-tight"
       >
-        {title} {highlight ? <span className="text-gradient">{highlight}</span> : null}
+        {title}{' '}
+        {highlight ? (
+          <span className="italic font-normal text-sky-azure underline decoration-artisan-ochre/50 decoration-wavy">
+            {highlight}
+          </span>
+        ) : null}
       </motion.h1>
 
       <motion.p
-        initial={{ opacity: 0, y: 22, filter: 'blur(8px)' }}
-        animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-        transition={{ duration: 0.8, ease: EASE, delay: 0.16 }}
-        className="mx-auto mt-5 max-w-md text-pretty text-lg leading-relaxed text-muted-foreground"
+        initial={{ opacity: 0, y: 22 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.16 }}
+        className="text-xs sm:text-sm text-parchment-800 font-light max-w-md mx-auto"
       >
         {subtitle}
       </motion.p>

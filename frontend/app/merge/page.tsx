@@ -34,11 +34,7 @@ export default function MergePage() {
   const addMoreRef = useRef<HTMLInputElement>(null)
 
   return (
-    <div className="relative min-h-screen bg-background">
-      <div
-        aria-hidden="true"
-        className="bg-grid pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,black,transparent)]"
-      />
+    <div className="relative min-h-screen bg-parchment-100 text-artisan-ink paper-grain">
 
       <div className="relative">
         <SiteNav />

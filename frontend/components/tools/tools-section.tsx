@@ -1,7 +1,7 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
-import { motion } from 'motion/react'
 import {
   Combine,
   Scissors,
@@ -19,158 +19,105 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 
-const MotionLink = motion.create(Link)
+export type ToolCategory = 'all' | 'convert' | 'organize' | 'security'
 
-type Tool = {
+export type ToolItem = {
+  id: string
   icon: LucideIcon
   title: string
   desc: string
-  /** Route for a shipped tool. Tools without an href are marked "Soon". */
-  href?: string
+  href: string
+  category: 'convert' | 'organize' | 'security'
+  badge?: string
 }
 
-const TOOLS: Tool[] = [
-  { icon: Combine, title: 'Merge', desc: 'Combine multiple PDFs into one clean document, in any order.', href: '/merge' },
-  { icon: Scissors, title: 'Split', desc: 'Extract pages or break a large file into separate documents.', href: '/split' },
-  { icon: Minimize2, title: 'Compress', desc: 'Shrink file size dramatically while keeping crisp quality.', href: '/compress' },
-  { icon: RotateCw, title: 'Rotate', desc: 'Fix orientation across pages with a single click.', href: '/rotate' },
-  { icon: FileType2, title: 'Word → PDF', desc: 'Convert Word (.docx, .doc) files to clean PDF documents.', href: '/word-to-pdf' },
-  { icon: FileOutput, title: 'PDF → Word', desc: 'Extract text and layout from PDF into editable Word (.docx).', href: '/pdf-to-word' },
-  { icon: FileType2, title: 'Excel → PDF', desc: 'Convert Excel spreadsheets (.xlsx) to formatted PDF tables.', href: '/excel-to-pdf' },
-  { icon: FileType2, title: 'PowerPoint → PDF', desc: 'Convert PowerPoint (.pptx) slides to portable PDF documents.', href: '/powerpoint-to-pdf' },
-  { icon: FileSignature, title: 'Images → PDF', desc: 'Convert JPG, PNG and WebP images into a single PDF.', href: '/images-to-pdf' },
-  { icon: FileOutput, title: 'PDF → Images', desc: 'Extract PDF pages as high-quality downloadable images.', href: '/pdf-to-images' },
-  { icon: Lock, title: 'Protect', desc: 'Encrypt with a password or remove protection you own.', href: '/protect' },
-  { icon: Stamp, title: 'Watermark', desc: 'Brand and secure documents with text or image stamps.', href: '/watermark' },
-  { icon: ScanText, title: 'Unlock', desc: 'Remove password security from protected PDF files.', href: '/unlock' },
-  { icon: Crop, title: 'Organize', desc: 'Reorder, delete, and extract specific pages with ease.', href: '/organize' },
-  { icon: Hash, title: 'Page Numbers', desc: 'Insert custom numbering, headers, and footers instantly.', href: '/page-numbers' },
-  { icon: FileType2, title: 'HTML → PDF', desc: 'Render raw HTML and styled text to paginated PDF.', href: '/convert' },
+export const ALL_TOOLS: ToolItem[] = [
+  { id: 'merge', icon: Combine, title: 'Merge PDF', desc: 'Combine multiple PDF documents into a single unified file.', href: '/merge', category: 'organize' },
+  { id: 'split', icon: Scissors, title: 'Split PDF', desc: 'Extract pages or separate documents into individual files.', href: '/split', category: 'organize' },
+  { id: 'compress', icon: Minimize2, title: 'Compress PDF', desc: 'Reduce file size while preserving high visual quality.', href: '/compress', category: 'organize' },
+  { id: 'pdf-to-word', icon: FileOutput, title: 'PDF → Word', desc: 'Convert PDF documents into editable Microsoft Word (.docx).', href: '/pdf-to-word', category: 'convert' },
+  { id: 'word-to-pdf', icon: FileType2, title: 'Word → PDF', desc: 'Convert Word documents (.docx, .doc) into standard PDF.', href: '/word-to-pdf', category: 'convert' },
+  { id: 'pdf-to-images', icon: FileOutput, title: 'PDF → Images', desc: 'Extract pages from PDF as crisp PNG image files.', href: '/pdf-to-images', category: 'convert' },
+  { id: 'images-to-pdf', icon: FileSignature, title: 'Images → PDF', desc: 'Convert JPG, PNG, and WebP images into a compiled PDF.', href: '/images-to-pdf', category: 'convert' },
+  { id: 'powerpoint-to-pdf', icon: FileType2, title: 'PowerPoint → PDF', desc: 'Convert PowerPoint (.pptx) slide decks into PDF documents.', href: '/powerpoint-to-pdf', category: 'convert' },
+  { id: 'excel-to-pdf', icon: FileType2, title: 'Excel → PDF', desc: 'Convert Excel spreadsheets (.xlsx) into structured PDF tables.', href: '/excel-to-pdf', category: 'convert' },
+  { id: 'rotate', icon: RotateCw, title: 'Rotate PDF', desc: 'Adjust page orientation across document pages.', href: '/rotate', category: 'organize' },
+  { id: 'organize', icon: Crop, title: 'Organize PDF', desc: 'Reorder, delete, or extract specific pages from PDF.', href: '/organize', category: 'organize' },
+  { id: 'page-numbers', icon: Hash, title: 'Page Numbers', desc: 'Insert custom page numbers, headers, and labels.', href: '/page-numbers', category: 'organize' },
+  { id: 'watermark', icon: Stamp, title: 'Watermark PDF', desc: 'Stamp custom text or image watermarks onto document pages.', href: '/watermark', category: 'security' },
+  { id: 'protect', icon: Lock, title: 'Protect PDF', desc: 'Encrypt document with secure passphrase lock.', href: '/protect', category: 'security' },
+  { id: 'unlock', icon: ScanText, title: 'Unlock PDF', desc: 'Remove password restrictions from protected PDF files.', href: '/unlock', category: 'security' },
 ]
 
-const CARD_CLASS =
-  'ring-highlight group relative flex flex-col overflow-hidden rounded-3xl border border-border bg-card/40 p-6 backdrop-blur-xl transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background'
-
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.06, delayChildren: 0.05 } },
-}
-
-const card = {
-  hidden: { opacity: 0, y: 24, filter: 'blur(6px)' },
-  show: {
-    opacity: 1,
-    y: 0,
-    filter: 'blur(0px)',
-    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const },
-  },
-}
-
 export function ToolsSection() {
+  const [activeCategory, setActiveCategory] = useState<ToolCategory>('all')
+
+  const filteredTools = ALL_TOOLS.filter((t) => activeCategory === 'all' || t.category === activeCategory)
+
   return (
-    <section id="tools" className="relative scroll-mt-24 py-24 sm:py-32">
-      {/* Ambient section glow */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-[40rem]"
-        style={{
-          background:
-            'radial-gradient(55% 60% at 50% 0%, color-mix(in oklch, var(--primary) 12%, transparent), transparent 70%)',
-        }}
-      />
-
-      <div className="relative mx-auto w-full max-w-7xl px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20, filter: 'blur(6px)' }}
-          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mx-auto max-w-2xl text-center"
-        >
-          <span className="ring-highlight inline-flex items-center gap-2 rounded-full border border-border bg-card/50 px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground backdrop-blur-xl">
-            <span className="size-1.5 rounded-full bg-primary shadow-[0_0_10px_2px_var(--primary)]" />
-            The toolkit
+    <section id="tools" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 scroll-mt-24">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-parchment-300 pb-4">
+        <div>
+          <span className="text-xs font-mono tracking-widest text-sky-deep uppercase font-bold">
+            Toolkit
           </span>
-
-          <h2 className="mt-7 text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.03em] text-foreground sm:text-5xl">
-            One workspace for <span className="text-gradient">every</span> document task
+          <h2 className="font-display text-2xl sm:text-3xl text-artisan-ink font-normal">
+            Artisan Document Toolkit ({ALL_TOOLS.length} Tools)
           </h2>
+        </div>
 
-          <p className="mx-auto mt-5 max-w-lg text-pretty text-lg leading-relaxed text-muted-foreground">
-            Twelve purpose-built tools that feel instant. No installs, no learning curve — just
-            drop a file and go.
-          </p>
-        </motion.div>
+        {/* Category Tabs */}
+        <div className="flex flex-wrap gap-2 text-xs" role="tablist" aria-label="Tool Categories">
+          {(['all', 'convert', 'organize', 'security'] as ToolCategory[]).map((cat) => (
+            <button
+              key={cat}
+              type="button"
+              role="tab"
+              aria-selected={activeCategory === cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-3.5 py-1.5 rounded-xl font-medium transition-all focus-visible:rounded-xl capitalize ${
+                activeCategory === cat
+                  ? 'bg-artisan-ink text-white shadow-sm'
+                  : 'bg-parchment-200 text-parchment-800 hover:bg-parchment-300'
+              }`}
+            >
+              {cat === 'all' ? 'All Tools' : cat}
+            </button>
+          ))}
+        </div>
+      </div>
 
-        <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: '-60px' }}
-          className="mt-16 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-        >
-          {TOOLS.map(({ icon: Icon, title, desc, href }) => {
-            const inner = (
-              <>
-                {/* Sheen sweep on hover */}
-                <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-primary/10 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
-
-                {/* Hover gradient wash */}
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute -right-16 -top-16 size-40 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
-                  style={{ background: 'radial-gradient(circle, var(--primary), transparent 70%)' }}
-                />
-
-                {href ? (
-                  <ArrowUpRight className="absolute right-5 top-5 size-4 text-muted-foreground opacity-0 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary group-hover:opacity-100" />
-                ) : (
-                  <span className="absolute right-5 top-5 rounded-full border border-border bg-secondary px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-                    Soon
-                  </span>
-                )}
-
-                <span className="bg-premium shadow-premium relative flex size-12 items-center justify-center rounded-2xl text-primary-foreground transition-transform duration-300 group-hover:scale-105">
-                  <Icon className="size-5" />
-                </span>
-
-                <h3 className="relative mt-5 text-lg font-semibold tracking-tight text-foreground">
-                  {title}
+      {/* Tool Cards Grid */}
+      <div id="toolGrid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+        {filteredTools.map((tool) => {
+          const Icon = tool.icon
+          return (
+            <Link
+              key={tool.id}
+              href={tool.href}
+              className="bg-parchment-100 rounded-2xl p-5 border border-parchment-300 shadow-paper hover:shadow-craft hover:-translate-y-1 transition-all group flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-sky-mist text-sky-azure flex items-center justify-center group-hover:scale-105 transition-transform">
+                    <Icon className="w-5 h-5" aria-hidden="true" />
+                  </div>
+                  <ArrowUpRight className="w-4 h-4 text-parchment-400 group-hover:text-sky-azure group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" aria-hidden="true" />
+                </div>
+                <h3 className="font-display text-base text-artisan-ink font-semibold group-hover:text-sky-azure transition-colors">
+                  {tool.title}
                 </h3>
-                <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {desc}
+                <p className="text-xs text-parchment-800 font-light leading-relaxed mt-1">
+                  {tool.desc}
                 </p>
-              </>
-            )
-
-            if (href) {
-              return (
-                <MotionLink
-                  key={title}
-                  href={href}
-                  variants={card}
-                  whileHover={{ y: -6 }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                  className={`${CARD_CLASS} hover:border-primary/40`}
-                >
-                  {inner}
-                </MotionLink>
-              )
-            }
-
-            return (
-              <motion.div
-                key={title}
-                variants={card}
-                aria-disabled="true"
-                title={`${title} — coming soon`}
-                className={`${CARD_CLASS} cursor-not-allowed opacity-80`}
-              >
-                {inner}
-              </motion.div>
-            )
-          })}
-        </motion.div>
+              </div>
+              <div className="mt-4 pt-3 border-t border-parchment-200/60 flex items-center justify-between text-[11px] text-sky-deep font-mono font-medium">
+                <span>Select Tool</span>
+                <span>&rarr;</span>
+              </div>
+            </Link>
+          )
+        })}
       </div>
     </section>
   )

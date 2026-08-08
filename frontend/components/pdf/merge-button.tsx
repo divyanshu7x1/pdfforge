@@ -1,8 +1,7 @@
 'use client'
 
 import { motion } from 'motion/react'
-import { Layers, ArrowRight } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { Sparkles, ArrowRight } from 'lucide-react'
 
 type MergeButtonProps = {
   disabled: boolean
@@ -22,25 +21,22 @@ export function MergeButton({ disabled, count, onMerge }: MergeButtonProps) {
             ? 'Add at least two PDF files to merge'
             : `Merge ${count} PDF${count === 1 ? '' : 's'}`
         }
-        whileHover={disabled ? undefined : { scale: 1.03 }}
-        whileTap={disabled ? undefined : { scale: 0.97 }}
+        whileHover={disabled ? undefined : { scale: 1.02 }}
+        whileTap={disabled ? undefined : { scale: 0.98 }}
         transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-        className={cn(
-          'group inline-flex w-full items-center justify-center gap-2 rounded-full px-8 py-4 text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:w-auto',
+        className={`px-6 py-3 rounded-xl font-medium text-xs sm:text-sm flex items-center gap-2 transition-all shadow-artisan ${
           disabled
-            ? 'cursor-not-allowed border border-border bg-secondary text-muted-foreground'
-            : 'bg-premium shadow-premium text-primary-foreground',
-        )}
+            ? 'cursor-not-allowed bg-parchment-300 text-parchment-800 opacity-60'
+            : 'bg-artisan-terracotta text-white hover:bg-artisan-clay'
+        }`}
       >
-        <Layers className="size-4" />
-        Merge {count > 0 ? `${count} PDFs` : 'PDFs'}
-        {!disabled && (
-          <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-        )}
+        <Sparkles className="w-4 h-4" />
+        <span>Merge {count > 0 ? `${count} PDFs` : 'PDFs'}</span>
+        {!disabled && <ArrowRight className="w-4 h-4" />}
       </motion.button>
 
       {disabled && (
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-parchment-800 font-mono">
           Add at least two files to enable merging.
         </p>
       )}

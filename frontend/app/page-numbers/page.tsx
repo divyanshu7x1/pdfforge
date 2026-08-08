@@ -39,11 +39,7 @@ export default function PageNumbersPage() {
   })
 
   return (
-    <div className="relative min-h-screen bg-background">
-      <div
-        aria-hidden="true"
-        className="bg-grid pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,black,transparent)]"
-      />
+    <div className="relative min-h-screen bg-parchment-100 text-artisan-ink paper-grain">
 
       <div className="relative">
         <SiteNav />
@@ -79,9 +75,9 @@ export default function PageNumbersPage() {
                         onAddMore={() => {}}
                       />
 
-                      <div className="mt-6 space-y-4 rounded-2xl border border-border bg-card/40 p-4 backdrop-blur-xl">
+                      <div className="mt-6 space-y-4 rounded-2xl border border-parchment-300 bg-parchment-50 p-4 shadow-sm">
                         <div>
-                          <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                          <label className="block text-xs font-semibold uppercase tracking-wider text-artisan-ink">
                             Numbering Format
                           </label>
                           <input
@@ -89,18 +85,18 @@ export default function PageNumbersPage() {
                             value={format}
                             onChange={(e) => setFormat(e.target.value)}
                             placeholder="Page {page} of {total}"
-                            className="mt-2 w-full rounded-xl border border-border bg-background/60 px-4 py-2.5 text-sm text-foreground outline-none focus:border-primary/50"
+                            className="mt-2 w-full rounded-xl border border-parchment-300 bg-parchment-100 px-4 py-2.5 text-xs font-mono text-artisan-ink outline-none focus:border-sky-azure"
                           />
                         </div>
 
                         <div>
-                          <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                          <label className="block text-xs font-semibold uppercase tracking-wider text-artisan-ink">
                             Position
                           </label>
                           <select
                             value={position}
                             onChange={(e) => setPosition(e.target.value as any)}
-                            className="mt-2 w-full rounded-xl border border-border bg-background/60 px-4 py-2.5 text-sm text-foreground outline-none focus:border-primary/50"
+                            className="mt-2 w-full rounded-xl border border-parchment-300 bg-parchment-100 px-4 py-2.5 text-xs font-mono text-artisan-ink outline-none focus:border-sky-azure"
                           >
                             <option value="bottom-center">Bottom Center</option>
                             <option value="bottom-right">Bottom Right</option>
@@ -117,10 +113,10 @@ export default function PageNumbersPage() {
                           type="button"
                           disabled={!canExecute}
                           onClick={() => executeTool({ position, format })}
-                          className="bg-premium shadow-premium inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03]"
+                          className="px-6 py-3 rounded-xl bg-artisan-terracotta text-white font-medium text-xs sm:text-sm shadow-artisan hover:bg-artisan-clay transition-all flex items-center gap-2"
                         >
-                          <Hash className="size-4" />
-                          Add Page Numbers
+                          <Hash className="w-4 h-4" />
+                          <span>Add Page Numbers</span>
                         </button>
                       </div>
                     </>

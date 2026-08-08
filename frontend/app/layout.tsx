@@ -1,22 +1,24 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Fraunces, Plus_Jakarta_Sans } from 'next/font/google'
 import { Providers } from '@/components/providers'
 import './globals.css'
 
-const geistSans = Geist({
+const fontDisplay = Fraunces({
   subsets: ['latin'],
-  variable: '--font-geist-sans',
+  variable: '--font-display',
+  display: 'swap',
 })
 
-const geistMono = Geist_Mono({
+const fontSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  variable: '--font-geist-mono',
+  variable: '--font-sans',
+  display: 'swap',
 })
 
-const SITE_TITLE = 'PDFForge — Premium PDF tools, forged for everyone'
+const SITE_TITLE = 'PDFForge — The Artisan Document Workshop'
 const SITE_DESCRIPTION =
-  'Merge, split, compress, rotate and convert PDFs in seconds — plus AI-powered chat, summaries and redaction. Fast, private, and free.'
+  'A modern coastal document studio where Word, Excel, PowerPoint, images, and PDFs are converted, organized, compressed, and protected cleanly.'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://pdfforge.app'),
@@ -26,7 +28,6 @@ export const metadata: Metadata = {
   },
   description: SITE_DESCRIPTION,
   applicationName: 'PDFForge',
-  generator: 'v0.app',
   openGraph: {
     type: 'website',
     siteName: 'PDFForge',
@@ -45,8 +46,8 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  colorScheme: 'dark',
-  themeColor: '#0a0a0f',
+  colorScheme: 'light',
+  themeColor: '#FDFBF7',
 }
 
 export default function RootLayout({
@@ -57,9 +58,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} bg-background`}
+      className={`${fontDisplay.variable} ${fontSans.variable} scroll-smooth bg-parchment-100 text-artisan-ink`}
     >
-      <body className="font-sans antialiased">
+      <body className="font-sans antialiased selection:bg-sky-azure selection:text-white paper-grain min-h-screen relative overflow-x-hidden">
         <Providers>{children}</Providers>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>

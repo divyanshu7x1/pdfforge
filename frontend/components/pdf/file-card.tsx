@@ -13,10 +13,6 @@ type FileCardProps = {
   onMove: (index: number, direction: -1 | 1) => void
 }
 
-/**
- * A draggable, reorderable file card. Dragging is initiated from the grip
- * handle only, so the rest of the card stays clickable/scrollable.
- */
 function FileCardComponent({
   file,
   index,
@@ -38,13 +34,11 @@ function FileCardComponent({
       exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.18 } }}
       whileDrag={{ scale: 1.02, cursor: 'grabbing' }}
       transition={{ type: 'spring', stiffness: 500, damping: 40 }}
-      className="ring-highlight group flex items-center gap-3 rounded-2xl border border-border bg-card/60 p-3 backdrop-blur-xl transition-colors hover:border-primary/40"
+      className="flex items-center gap-3 rounded-xl border border-parchment-300 bg-parchment-50 p-3 shadow-sm transition-colors hover:border-sky-azure"
     >
-      {/* Drag handle */}
       <button
         type="button"
-        aria-label={`Reorder ${file.name}. Use arrow keys to move up or down.`}
-        aria-keyshortcuts="ArrowUp ArrowDown"
+        aria-label={`Reorder ${file.name}`}
         onPointerDown={(e) => controls.start(e)}
         onKeyDown={(e) => {
           if (e.key === 'ArrowUp') {
@@ -55,41 +49,31 @@ function FileCardComponent({
             onMove(index, 1)
           }
         }}
-        className="flex size-9 shrink-0 cursor-grab touch-none items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:bg-secondary focus-visible:text-foreground active:cursor-grabbing"
+        className="flex size-8 shrink-0 cursor-grab items-center justify-center rounded-lg text-parchment-800 hover:bg-parchment-200 transition-colors"
       >
         <GripVertical className="size-4" />
       </button>
 
-      {/* Order badge */}
-      <span
-        className="flex size-6 shrink-0 items-center justify-center rounded-md bg-secondary text-xs font-semibold tabular-nums text-muted-foreground"
-        aria-hidden="true"
-      >
+      <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-parchment-200 text-xs font-mono font-bold text-parchment-800">
         {index + 1}
       </span>
 
-      {/* PDF icon */}
-      <span
-        className="bg-premium shadow-premium flex size-10 shrink-0 items-center justify-center rounded-xl text-primary-foreground"
-        aria-hidden="true"
-      >
+      <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-sky-mist text-sky-azure">
         <FileText className="size-5" />
-      </span>
+      </div>
 
-      {/* Meta */}
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-medium text-foreground">{file.name}</p>
-        <p className="mt-0.5 text-xs tabular-nums text-muted-foreground">
+        <p className="truncate text-xs font-medium text-artisan-ink">{file.name}</p>
+        <p className="mt-0.5 text-[11px] font-mono text-parchment-800">
           {formatBytes(file.size)}
         </p>
       </div>
 
-      {/* Remove */}
       <button
         type="button"
         onClick={() => onRemove(file.id)}
         aria-label={`Remove ${file.name}`}
-        className="flex size-9 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-destructive/15 hover:text-destructive focus-visible:bg-destructive/15 focus-visible:text-destructive"
+        className="flex size-8 shrink-0 items-center justify-center rounded-lg text-artisan-terracotta hover:bg-artisan-terracotta/10 transition-colors"
       >
         <X className="size-4" />
       </button>

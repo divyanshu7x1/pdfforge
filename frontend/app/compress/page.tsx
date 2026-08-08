@@ -37,11 +37,7 @@ export default function CompressPage() {
   })
 
   return (
-    <div className="relative min-h-screen bg-background">
-      <div
-        aria-hidden="true"
-        className="bg-grid pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,black,transparent)]"
-      />
+    <div className="relative min-h-screen bg-parchment-100 text-artisan-ink paper-grain">
 
       <div className="relative">
         <SiteNav />
@@ -77,8 +73,8 @@ export default function CompressPage() {
                         onAddMore={() => {}}
                       />
 
-                      <div className="mt-6 rounded-2xl border border-border bg-card/40 p-5 text-center backdrop-blur-xl">
-                        <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                      <div className="mt-6 rounded-2xl border border-parchment-300 bg-parchment-50 p-5 text-center shadow-sm">
+                        <label className="block text-xs font-semibold uppercase tracking-wider text-artisan-ink">
                           Compression Level
                         </label>
                         <div className="mt-3 flex justify-center gap-3">
@@ -87,10 +83,10 @@ export default function CompressPage() {
                               key={lvl}
                               type="button"
                               onClick={() => setQuality(lvl)}
-                              className={`capitalize rounded-xl border px-5 py-2 text-sm font-semibold transition-colors ${
+                              className={`capitalize rounded-xl border px-5 py-2 text-xs font-semibold transition-all ${
                                 quality === lvl
-                                  ? 'border-primary bg-primary text-primary-foreground'
-                                  : 'border-border bg-secondary text-muted-foreground hover:text-foreground'
+                                  ? 'border-sky-azure bg-sky-azure text-white shadow-sm'
+                                  : 'border-parchment-300 bg-parchment-100 text-parchment-800 hover:bg-parchment-200'
                               }`}
                             >
                               {lvl} Compression
@@ -104,10 +100,10 @@ export default function CompressPage() {
                           type="button"
                           disabled={!canExecute}
                           onClick={() => executeTool({ quality })}
-                          className="bg-premium shadow-premium inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03]"
+                          className="px-6 py-3 rounded-xl bg-artisan-terracotta text-white font-medium text-xs sm:text-sm shadow-artisan hover:bg-artisan-clay transition-all flex items-center gap-2"
                         >
-                          <Minimize2 className="size-4" />
-                          Compress PDF
+                          <Minimize2 className="w-4 h-4" />
+                          <span>Compress PDF</span>
                         </button>
                       </div>
                     </>
