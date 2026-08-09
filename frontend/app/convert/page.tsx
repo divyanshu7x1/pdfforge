@@ -13,7 +13,7 @@ import { parseNetworkError, parseResponseError } from '@/lib/api-error'
 import { FileType2 } from 'lucide-react'
 
 export default function ConvertPage() {
-  const [content, setContent] = useState('<h1>Sample Document</h1><p>Welcome to PDFForge instant document converter!</p>')
+  const [content, setContent] = useState('<h1>Sample Document</h1><p>Welcome to PDFYaar instant document converter!</p>')
   const [status, setStatus] = useState<'idle' | 'processing' | 'success'>('idle')
   const [progress, setProgress] = useState(0)
   const [error, setError] = useState<string | null>(null)

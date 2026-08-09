@@ -33,7 +33,7 @@ export function ProgressSection({
         {statusMessage}
       </h2>
       <p className="text-xs text-parchment-800 mt-1 font-mono">
-        Processing {fileCount} file{fileCount === 1 ? '' : 's'} cleanly via PDFForge API
+        Processing {fileCount} file{fileCount === 1 ? '' : 's'} cleanly via PDFYaar API
       </p>
 
       <div

@@ -25,7 +25,7 @@ export function SiteFooter() {
         </nav>
 
         <div className="flex items-center gap-4 text-xs">
-          <span>&copy; {new Date().getFullYear()} PDFForge Atelier. All rights reserved.</span>
+          <span>&copy; {new Date().getFullYear()} PDFYaar Atelier. All rights reserved.</span>
           <a href="#top" className="text-sky-azure hover:underline">
             Back to Top &uarr;
           </a>

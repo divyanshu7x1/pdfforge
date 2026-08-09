@@ -13,7 +13,7 @@ const FAQS = [
   },
   {
     q: 'Do I need to install anything?',
-    a: 'No. PDFForge runs entirely in your browser. It works on any device with a modern browser — no downloads, plugins, or accounts required to get started.',
+    a: 'No. PDFYaar runs entirely in your browser. It works on any device with a modern browser — no downloads, plugins, or accounts required to get started.',
   },
   {
     q: 'Is there a file size or usage limit?',
@@ -24,7 +24,7 @@ const FAQS = [
     a: 'It can summarize documents, answer questions with citations to the source pages, translate content, and rewrite or reformat text — all grounded in the file you upload.',
   },
   {
-    q: 'Can I use PDFForge for signed, legal documents?',
+    q: 'Can I use PDFYaar for signed, legal documents?',
     a: 'Absolutely. Our e-signatures are legally recognized in most jurisdictions, with a full audit trail and tamper-evident sealing on every signed document.',
   },
   {

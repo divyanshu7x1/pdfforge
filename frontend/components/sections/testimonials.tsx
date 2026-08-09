@@ -8,7 +8,7 @@ import { SECTION_EASE } from '@/lib/constants'
 const TESTIMONIALS = [
   {
     quote:
-      'We replaced three separate subscriptions with PDFForge. The batch tools alone save our ops team hours every single week.',
+      'We replaced three separate subscriptions with PDFYaar. The batch tools alone save our ops team hours every single week.',
     name: 'Mara Ellison',
     role: 'Head of Operations, Northwind',
     initials: 'ME',
@@ -87,7 +87,7 @@ export function Testimonials() {
             Trusted by <span className="text-gradient">2 million</span> document wranglers
           </h2>
           <p className="mx-auto mt-5 max-w-lg text-pretty text-lg leading-relaxed text-muted-foreground">
-            From solo founders to enterprise teams, PDFForge is the tool people keep open in a tab
+            From solo founders to enterprise teams, PDFYaar is the tool people keep open in a tab
             all day.
           </p>
         </motion.div>

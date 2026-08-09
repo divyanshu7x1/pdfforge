@@ -16,21 +16,21 @@ const fontSans = Plus_Jakarta_Sans({
   display: 'swap',
 })
 
-const SITE_TITLE = 'PDFForge — The Artisan Document Workshop'
+const SITE_TITLE = 'PDFYaar — PDF & Document Tools'
 const SITE_DESCRIPTION =
   'A modern coastal document studio where Word, Excel, PowerPoint, images, and PDFs are converted, organized, compressed, and protected cleanly.'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://pdfforge.app'),
+  metadataBase: new URL('https://pdfyaar.app'),
   title: {
     default: SITE_TITLE,
-    template: '%s · PDFForge',
+    template: '%s · PDFYaar',
   },
   description: SITE_DESCRIPTION,
-  applicationName: 'PDFForge',
+  applicationName: 'PDFYaar',
   openGraph: {
     type: 'website',
-    siteName: 'PDFForge',
+    siteName: 'PDFYaar',
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
   },

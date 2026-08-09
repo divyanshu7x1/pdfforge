@@ -17,7 +17,7 @@ export class SecurityService {
     // Set PDF Security Metadata & Protected Title
     doc.setTitle(`Protected Document (${userPassword.substring(0, 2)}***)`);
     doc.setSubject('Password Protected PDF');
-    doc.setProducer('PDFForge Security Module');
+    doc.setProducer('PDFYaar Security Module');
 
     const bytes = await doc.save({ useObjectStreams: true });
     return Buffer.from(bytes);

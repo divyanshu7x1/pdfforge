@@ -1,22 +1,22 @@
-# PDFForge — Production-Grade SaaS PDF Toolkit
+# PDFYaar — Production-Grade SaaS PDF Toolkit
 
-PDFForge is a high-performance, secure, and private PDF management SaaS web application built with **Next.js 16 (React 19)**, **Express 5**, **TypeScript**, **TailwindCSS 4**, **Framer Motion**, and **pdf-lib**.
+PDFYaar is a high-performance, secure, and private PDF management SaaS web application built with **Next.js 16 (React 19)**, **Express 5**, **TypeScript**, **TailwindCSS 4**, **Framer Motion**, and **pdf-lib**.
 
 ---
 
 ## 🎨 Screenshots & Visual Interface
 
 ### Meadow Sky Atelier & PDF Workbench
-![PDFForge Meadow Sky Atelier Hero](docs/screenshots/hero-atelier.png)
+![PDFYaar Meadow Sky Atelier Hero](docs/screenshots/hero-atelier.png)
 
 ### Format Conversion Showcase
-![PDFForge Format Conversion Showcase](docs/screenshots/transformations-showcase.png)
+![PDFYaar Format Conversion Showcase](docs/screenshots/transformations-showcase.png)
 
 ### 15 Artisan Document Tools
-![PDFForge 15 Artisan Document Toolkit](docs/screenshots/artisan-toolkit.png)
+![PDFYaar 15 Artisan Document Toolkit](docs/screenshots/artisan-toolkit.png)
 
 ### Security Sanctum (Password Encryption & Watermarking)
-![PDFForge Security Sanctum Banner](docs/screenshots/security-sanctum.png)
+![PDFYaar Security Sanctum Banner](docs/screenshots/security-sanctum.png)
 
 ---
 
@@ -145,7 +145,7 @@ All endpoints are mounted at `/api/pdf`:
 ### Environment Variables
 - `PORT`: Port number for backend (default: `4000`).
 - `NODE_ENV`: `production` or `development`.
-- `CORS_ORIGIN`: Allowed origins e.g. `https://pdfforge.app` or `*`.
+- `CORS_ORIGIN`: Allowed origins e.g. `https://pdfyaar.app` or `*`.
 - `NEXT_PUBLIC_API_BASE_URL`: Base API URL for frontend (e.g. `http://localhost:4000/api`).
 
 ### Production Build

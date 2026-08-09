@@ -29,7 +29,7 @@ export function SiteNav() {
       className="sticky top-0 z-50 bg-parchment-100/95 backdrop-blur-md border-b border-sky-100/80 transition-all duration-300"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
-        <Link href="/" aria-label="PDFForge Homepage">
+        <Link href="/" aria-label="PDFYaar Homepage">
           <Logo />
         </Link>
 

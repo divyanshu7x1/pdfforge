@@ -9,7 +9,7 @@ export function Logo({ className }: { className?: string }) {
       </div>
       <div className="flex flex-col">
         <span className="font-display font-bold text-xl sm:text-2xl tracking-tight text-artisan-ink group-hover:text-sky-azure transition-colors">
-          PDFForge
+          PDFYaar
         </span>
         <span className="text-[9px] sm:text-[10px] tracking-widest uppercase text-meadow-emerald font-bold -mt-1">
           Coastal Sky Atelier

@@ -10,7 +10,7 @@ apiRouter.get('/', (_req, res) => {
     success: true,
     data: {
       service: env.APP_NAME,
-      message: 'PDFForge API foundation is ready.'
+      message: 'PDFYaar API foundation is ready.'
     }
   });
 });
